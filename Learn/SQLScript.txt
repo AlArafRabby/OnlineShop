@@ -1,0 +1,11 @@
+Scaffold - DbContext "Server=OnlineShopJoy.mssql.somee.com;Database=OnlineShopJoy;Trusted_Connection=True;MultipleActiveResultSets=true;;User ID=rabby_SQLLogin_1;Password=bkdeynioq4;Integrated Security=false;" Microsoft.EntityFrameworkCore.SqlServer - OutputDir Models
+
+
+
+Scaffold-DbContext "Data Source=OnlineShopJoy.mssql.somee.com;Initial Catalog=OnlineShopJoy;Persist Security Info=True;User ID=rabby_SQLLogin_1;Password=bkdeynioq4;Integrated Security=false;" Microsoft.EntityFrameworkCore.SqlServer - OutputDir Models
+
+
+
+Scaffold-DbContext "Data Source=OnlineShopJoy.mssql.somee.com;Initial Catalog=OnlineShopJoy;Persist Security Info=True;User ID=rabby_SQLLogin_1;Password=bkdeynioq4" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+
+Data Source=OnlineShopJoy.mssql.somee.com;Initial Catalog=OnlineShopJoy;Persist Security Info=True;User ID=rabby_SQLLogin_1;Password=bkdeynioq4

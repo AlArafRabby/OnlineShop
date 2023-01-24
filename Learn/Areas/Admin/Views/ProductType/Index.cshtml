@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Learn.Models.ProductType>
+@using Learn.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Product Type List</h1>
+
+<p style="text-align:right;margin-right:20px;">
+    <a class="btn btn-outline-primary" asp-action="Create">Create New</a>
+</p>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductType1)
+                </th>
+                <th></th>
+                <th>Edit Action</th>
+                <th>Details Action</th>
+                <th>Delete Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductType1)
+                    </td>
+          
+                    <td>
+                    <td class="text-center">
+                        <a asp-action="Create" class="btn btn-outline-primary" asp-area="Admin" asp-controller="ProductType" asp-route-employeeId="@item.Id">Edit</a>
+                    </td>
+                    <td class="text-center">
+                        <a asp-action="Details" class="btn btn-outline-info" asp-area="Admin" asp-controller="ProductType" asp-route-employeeId="@item.Id">Details</a>
+                    </td>
+                    <td class="text-center">
+                        <a asp-action="Delete" class="btn btn-outline-danger" asp-area="Admin" asp-controller="ProductType" asp-route-employeeId="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("~/Pages/Shared/_ValidationScriptsPartial.cshtml");
+    }
+}
+
+
+

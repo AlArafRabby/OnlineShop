@@ -1,0 +1,9 @@
+C:\Test\Learn\Learn\obj\Release\net6.0\Learn.csproj.AssemblyReference.cache
+C:\Test\Learn\Learn\obj\Release\net6.0\Learn.GeneratedMSBuildEditorConfig.editorconfig
+C:\Test\Learn\Learn\obj\Release\net6.0\Learn.AssemblyInfoInputs.cache
+C:\Test\Learn\Learn\obj\Release\net6.0\Learn.AssemblyInfo.cs
+C:\Test\Learn\Learn\obj\Release\net6.0\Learn.csproj.CoreCompileInputs.cache
+C:\Test\Learn\Learn\obj\Release\net6.0\Learn.MvcApplicationPartsAssemblyInfo.cs
+C:\Test\Learn\Learn\obj\Release\net6.0\Learn.MvcApplicationPartsAssemblyInfo.cache
+C:\Test\Learn\Learn\obj\Release\net6.0\Learn.RazorAssemblyInfo.cache
+C:\Test\Learn\Learn\obj\Release\net6.0\Learn.RazorAssemblyInfo.cs

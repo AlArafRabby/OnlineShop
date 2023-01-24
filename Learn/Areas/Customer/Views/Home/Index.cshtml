@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewData["index"] = "index";
+    ViewData["routeInfo"] = "routeInfo";
+}
+<h1>@ViewData["index"]</h1>
+<h1>@ViewData["routeInfo"]</h1>
+<h1>Product Type</h1>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("~/Pages/Shared/_ValidationScriptsPartial.cshtml");
+    }
+}
