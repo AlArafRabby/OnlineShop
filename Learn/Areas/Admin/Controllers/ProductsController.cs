@@ -144,8 +144,8 @@ namespace Learn.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Id", product.ProductTypeId);
-            ViewData["SpecialTagId"] = new SelectList(_context.SpecialTags, "Id", "Id", product.SpecialTagId);
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "ProductType1", product.ProductTypeId);
+            ViewData["SpecialTagId"] = new SelectList(_context.SpecialTags, "Id", "Name", product.SpecialTagId);
             return View(product);
         }
 
