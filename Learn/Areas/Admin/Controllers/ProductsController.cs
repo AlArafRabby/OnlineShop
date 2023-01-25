@@ -14,10 +14,11 @@ namespace Learn.Areas.Admin.Controllers
     public class ProductsController : Controller
     {
         private readonly OnlineShopJoyContext _context;
-
-        public ProductsController(OnlineShopJoyContext context)
+        private Microsoft.AspNetCore.Hosting.IHostingEnvironment _he;
+        public ProductsController(OnlineShopJoyContext context, Microsoft.AspNetCore.Hosting.IHostingEnvironment he)
         {
             _context = context;
+            _he = he;
         }
 
         // GET: Admin/Products
@@ -50,8 +51,8 @@ namespace Learn.Areas.Admin.Controllers
         // GET: Admin/Products/Create
         public IActionResult Create()
         {
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Id");
-            ViewData["SpecialTagId"] = new SelectList(_context.SpecialTags, "Id", "Id");
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "ProductType1");
+            ViewData["SpecialTagId"] = new SelectList(_context.SpecialTags, "Id", "Name");
             return View();
         }
 
@@ -59,17 +60,37 @@ namespace Learn.Areas.Admin.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price,Image,ProductColor,IsAvailable,ProductTypeId,SpecialTagId")] Product product)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Product product, IFormFile image)
         {
             if (ModelState.IsValid)
             {
+                var searchProduct = _context.Products.FirstOrDefault(c => c.Name == product.Name);
+                if (searchProduct != null)
+                {
+                    ViewBag.message = "This product is already exist";
+                    ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "ProductType1", product.ProductTypeId);
+                    ViewData["SpecialTagId"] = new SelectList(_context.SpecialTags, "Id", "Name", product.SpecialTagId);
+                    return View(product);
+                }
+                if (image != null)
+                {
+                    var name = Path.Combine(_he.WebRootPath + "/Images", Path.GetFileName(image.FileName));
+                    await image.CopyToAsync(new FileStream(name, FileMode.Create));
+                    product.Image = "Images/" + image.FileName;
+                }
+
+                if (image == null)
+                {
+                    product.Image = "Images/noimage.PNG";
+                }
+               
+
                 _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Id", product.ProductTypeId);
-            ViewData["SpecialTagId"] = new SelectList(_context.SpecialTags, "Id", "Id", product.SpecialTagId);
+           
             return View(product);
         }
 
@@ -86,8 +107,8 @@ namespace Learn.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "Id", product.ProductTypeId);
-            ViewData["SpecialTagId"] = new SelectList(_context.SpecialTags, "Id", "Id", product.SpecialTagId);
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "ProductType1", product.ProductTypeId);
+            ViewData["SpecialTagId"] = new SelectList(_context.SpecialTags, "Id", "Name", product.SpecialTagId);
             return View(product);
         }
 
