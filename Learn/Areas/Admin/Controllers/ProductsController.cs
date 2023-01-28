@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Learn.Data;
 using Learn.Models;
+using Learn.DTO;
 
 namespace Learn.Areas.Admin.Controllers
 {
@@ -24,8 +25,7 @@ namespace Learn.Areas.Admin.Controllers
         // GET: Admin/Products
         public async Task<IActionResult> Index()
         {
-            var onlineShopJoyContext = _context.Products.Include(p => p.ProductType).Include(p => p.SpecialTag);
-            return View(await onlineShopJoyContext.ToListAsync());
+            return View(_context.Products.Include(c => c.ProductTypes).Include(f => f.SpecialTag).ToList());
         }
 
         // GET: Admin/Products/Details/5
@@ -37,7 +37,7 @@ namespace Learn.Areas.Admin.Controllers
             }
 
             var product = await _context.Products
-                .Include(p => p.ProductType)
+                .Include(p => p.ProductTypes)
                 .Include(p => p.SpecialTag)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
@@ -51,7 +51,7 @@ namespace Learn.Areas.Admin.Controllers
         // GET: Admin/Products/Create
         public IActionResult Create()
         {
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "ProductType1");
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "ProductTypes");
             ViewData["SpecialTagId"] = new SelectList(_context.SpecialTags, "Id", "Name");
             return View();
         }
@@ -61,7 +61,7 @@ namespace Learn.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Product product, IFormFile image)
+        public async Task<IActionResult> Create(ProductDTO product, IFormFile image)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +69,7 @@ namespace Learn.Areas.Admin.Controllers
                 if (searchProduct != null)
                 {
                     ViewBag.message = "This product is already exist";
-                    ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "ProductType1", product.ProductTypeId);
+                    ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "ProductTypes", product.ProductTypeId);
                     ViewData["SpecialTagId"] = new SelectList(_context.SpecialTags, "Id", "Name", product.SpecialTagId);
                     return View(product);
                 }
@@ -84,13 +84,23 @@ namespace Learn.Areas.Admin.Controllers
                 {
                     product.Image = "Images/noimage.PNG";
                 }
-               
+                var detalis = new Products
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Price = product.Price,
+                    Image = product.Image,
+                    ProductColor = product.ProductColor,
+                    IsAvailable = product.IsAvailable,
+                    ProductTypeId = product.ProductTypeId,
+                    SpecialTagId = product.SpecialTagId,
+                };
 
-                _context.Add(product);
+                _context.Add(detalis);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-           
+
             return View(product);
         }
 
@@ -107,7 +117,7 @@ namespace Learn.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "ProductType1", product.ProductTypeId);
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "ProductTypes", product.ProductTypeId);
             ViewData["SpecialTagId"] = new SelectList(_context.SpecialTags, "Id", "Name", product.SpecialTagId);
             return View(product);
         }
@@ -117,7 +127,7 @@ namespace Learn.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Image,ProductColor,IsAvailable,ProductTypeId,SpecialTagId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price,Image,ProductColor,IsAvailable,ProductTypeId,SpecialTagId")] ProductDTO product)
         {
             if (id != product.Id)
             {
@@ -128,7 +138,21 @@ namespace Learn.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(product);
+                    var detalis = new Products
+                    {
+                        Id = product.Id,
+                        Name = product.Name,
+                        Price = product.Price,
+                        Image = product.Image,
+                        ProductColor = product.ProductColor,
+                        IsAvailable = product.IsAvailable,
+                        ProductTypeId = product.ProductTypeId,
+                        SpecialTagId = product.SpecialTagId,
+                    };
+
+
+
+                    _context.Update(detalis);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -144,7 +168,7 @@ namespace Learn.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "ProductType1", product.ProductTypeId);
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductTypes, "Id", "ProductTypes", product.ProductTypeId);
             ViewData["SpecialTagId"] = new SelectList(_context.SpecialTags, "Id", "Name", product.SpecialTagId);
             return View(product);
         }
@@ -158,7 +182,7 @@ namespace Learn.Areas.Admin.Controllers
             }
 
             var product = await _context.Products
-                .Include(p => p.ProductType)
+                .Include(p => p.ProductTypes)
                 .Include(p => p.SpecialTag)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
@@ -183,14 +207,14 @@ namespace Learn.Areas.Admin.Controllers
             {
                 _context.Products.Remove(product);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductExists(int id)
         {
-          return _context.Products.Any(e => e.Id == id);
+            return _context.Products.Any(e => e.Id == id);
         }
     }
 }

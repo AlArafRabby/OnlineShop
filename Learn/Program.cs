@@ -1,3 +1,4 @@
+
 using Learn.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,21 @@ namespace Learn
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            //builder.Services.Configure<CookiePolicyOptions>(options =>
+            //{
+            //    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+            //    options.CheckConsentNeeded = context => true;
+            //    options.MinimumSameSitePolicy = SameSiteMode.None;
+            //});
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession(options =>
+            {
+                // Set a short timeout for easy testing.
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                //options.Cookie.HttpOnly = true;
+                // Make the session cookie essential
+                options.Cookie.IsEssential = true;
+            });
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<OnlineShopJoyContext>(options =>
@@ -36,7 +52,8 @@ namespace Learn
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseCookiePolicy();
+            app.UseSession();
             app.UseRouting();
 
 
@@ -48,7 +65,7 @@ namespace Learn
             {
                 endpoints.MapControllerRoute(
                 name: "areas",
-                pattern: "{area=Admin}/{controller=ProductType}/{action=Index}/{id?}"
+                pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}"
               );
                 //endpoints.MapControllerRoute(
                 //  name: "areas",
@@ -58,14 +75,7 @@ namespace Learn
               
             });
 
-            //app.UseEndpoints(endpoints =>
-            //{
-
-            //    endpoints.MapControllerRoute("areas", "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-            //    endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
-            //    endpoints.MapRazorPages();
-            //});
-            //
+           
 
             //app.MapControllerRoute(
             //    name: "MyArea",

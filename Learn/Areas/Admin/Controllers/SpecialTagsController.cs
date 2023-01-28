@@ -23,7 +23,7 @@ namespace Learn.Areas.Admin.Controllers
         // GET: Admin/SpecialTags
         public async Task<IActionResult> Index()
         {
-              return View(await _context.SpecialTags.ToListAsync());
+            return View(await _context.SpecialTags.ToListAsync());
         }
 
         // GET: Admin/SpecialTags/Details/5
@@ -149,14 +149,14 @@ namespace Learn.Areas.Admin.Controllers
             {
                 _context.SpecialTags.Remove(specialTag);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool SpecialTagExists(int id)
         {
-          return _context.SpecialTags.Any(e => e.Id == id);
+            return _context.SpecialTags.Any(e => e.Id == id);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Learn.Models.Product>
+﻿@model IEnumerable<Learn.Models.Products>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, AuthoringTagHelpers
 @{
@@ -30,7 +30,7 @@
                 @Html.DisplayNameFor(model => model.IsAvailable)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ProductType)
+                @Html.DisplayNameFor(model => model.ProductTypes)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.SpecialTag)
@@ -57,7 +57,7 @@
                 @Html.DisplayFor(modelItem => item.IsAvailable)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProductType.Id)
+                @Html.DisplayFor(modelItem => item.ProductTypes.Id)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.SpecialTag.Id)

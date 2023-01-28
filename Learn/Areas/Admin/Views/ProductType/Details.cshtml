@@ -14,32 +14,9 @@
             @Html.DisplayNameFor(model => model.Id)
         </dt>
         <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.ProductType1)
+            @Html.DisplayFor(model => model.ProductTypes)
         </dd>
-@*        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.Designation)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.Designation)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.Salary)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.Salary)
-        </dd>
-        <dt class="col-sm-3">
-            @Html.DisplayNameFor(model => model.JoiningDate)
-        </dt>
-        <dd class="col-sm-9">
-            @Html.DisplayFor(model => model.JoiningDate)
-        </dd>*@
+
     </dl>
     <div>
         <a class="btn btn-primary" asp-action="AddOrEdit" asp-route-employeeId="@Model.Id">Edit</a>
