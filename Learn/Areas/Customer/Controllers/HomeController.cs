@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Diagnostics;
 
 namespace Learn.Areas.Customer.Controllers
@@ -66,21 +67,11 @@ namespace Learn.Areas.Customer.Controllers
                 return NotFound();
             }
 
-            var product = _db.Products.Include(c => c.ProductTypes).FirstOrDefault(c => c.Id == id);
+            var p = _db.Products.Include(p => p.ProductTypes).Include(c => c.SpecialTag).FirstOrDefault(defaultValue => defaultValue.Id == id);
 
 
-            //var product = new Products
-            //{
-            //    Id = products.Id,
-            //    Name = products.Name,
-            //    Price = products.Price,
-            //    Image = products.Image,
-            //    ProductColor = products.ProductColor,
-            //    IsAvailable = products.IsAvailable,
-            //    ProductTypeId = products.ProductTypeId,
-            //    SpecialTagId = products.SpecialTagId,
-            //};
-            if (product == null)
+
+            if (p == null)
             {
                 return NotFound();
             }
@@ -89,24 +80,31 @@ namespace Learn.Areas.Customer.Controllers
             {
                 products = new List<Products>();
             }
-            products.Add(product);
-            HttpContext.Session.SetObjectAsJson("products", product);
+            products.Add(p);
+            HttpContext.Session.SetObjectAsJson("products", products);
             return RedirectToAction(nameof(Index));
+            //return View(products);
+
+            //var p = _db.Products.Include(p => p.ProductTypes).Include(c => c.SpecialTag).FirstOrDefault(defaultValue => defaultValue.Id == id);
+            //products.Add(p);
+            //HttpContext.Session.SetObjectAsJson("products", products);
+            //return RedirectToAction(nameof(Index));
         }
         //GET Remove action methdo
+        [HttpGet]
         [ActionName("Remove")]
         public IActionResult RemoveToCart(int? id)
         {
-            List<Products> products = HttpContext.Session.GetObjectFromJson<List<Products>>("products");
-            if (products != null)
-            {
-                var product = products.FirstOrDefault(c => c.Id == id);
-                if (product != null)
-                {
-                    products.Remove(product);
-                    HttpContext.Session.SetObjectAsJson("products", product);
-                }
-            }
+            //List<Products> products = HttpContext.Session.GetObjectFromJson<List<Products>>("products");
+            //if (products != null)
+            //{
+            //    var product = products.FirstOrDefault(c => c.Id == id);
+            //    if (product != null)
+            //    {
+            //        products.Remove(product);
+            //        HttpContext.Session.SetObjectAsJson("products", product);
+            //    }
+            //}
             return RedirectToAction(nameof(Index));
         }
         [HttpPost]
@@ -114,13 +112,14 @@ namespace Learn.Areas.Customer.Controllers
         public IActionResult Remove(int? id)
         {
             List<Products> products = HttpContext.Session.GetObjectFromJson<List<Products>>("products");
+            
             if (products != null)
             {
-                var product = products.FirstOrDefault(c => c.Id == id);
-                if (product != null)
+                var p = products.FirstOrDefault(c => c.Id == id);
+                if (p != null)
                 {
-                    products.Remove(product);
-                    HttpContext.Session.SetObjectAsJson("products", product);
+                    products.Remove(p);
+                    HttpContext.Session.SetObjectAsJson("products", products);
                 }
             }
             return RedirectToAction(nameof(Index));

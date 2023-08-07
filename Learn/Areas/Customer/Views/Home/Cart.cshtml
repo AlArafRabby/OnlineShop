@@ -1,0 +1,53 @@
+﻿@using Learn.Models
+@model List<Products>
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<h1>Cart</h1>
+<div class="row">
+    <div class="col-md-12">
+    <table class="table table-bordered">
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Product Type</th>
+            <th>Color</th>
+            <th></th>
+        </tr>
+        @{
+            foreach(var item in Model)
+            {
+                  <tr>
+                     <td>
+                     <img src="~/@item.Image" width="100px" height="100px"/>
+                     </td>
+                    <td>@item.Name</td>
+                    <td>@item.Price</td>
+                    <td>@item.ProductTypes.ProductTypes</td>
+                    <td>@item.ProductColor</td>
+                    <td>
+                        <a asp-area="Customer" asp-action="Remove" asp-controller="Home" asp-route-id="@item.Id" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                    </td>
+                  </tr>
+            }
+        }
+      
+    </table>
+    </div>
+</div>
+    <div class="row">
+        <div class="col-md-6">
+            <a asp-action="index" asp-controller="Home" asp-route-id="" class="btn btn-success">Back to Home</a>
+
+        </div>
+        <div class="col-md-6 text-end">
+            <h3>Total Amuount</h3>
+            <h3>Grand Total : @Model.Sum(c=>c.Price)</h3>
+            <a asp-area="Customer" asp-action="Index" asp-controller="Order" class="btn btn-info">Process to Checkout</a>
+
+        </div>
+    </div>
+
+

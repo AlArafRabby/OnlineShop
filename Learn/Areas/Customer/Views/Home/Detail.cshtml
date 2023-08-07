@@ -1,4 +1,5 @@
-﻿@using Learn.Models;
+﻿@using Learn.DTO;
+@using Learn.Models;
 @model Learn.Models.Products
 @{
     ViewData["Title"] = "Details";
@@ -7,7 +8,10 @@
 @inject IHttpContextAccessor HttpContextAccessor
 @{
 
-    List<Products> products = HttpContextAccessor.HttpContext.Session.GetObjectFromJson<List<Products>>("products");
+    
+    // Retrieving the list of ProductDTO objects from the session with the key "products"
+    var products = HttpContextAccessor.HttpContext.Session.GetObjectFromJson<List<Products>>("products");
+
     Products product = null;
     if (products != null)
     {

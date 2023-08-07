@@ -11,12 +11,7 @@ namespace Learn
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            //builder.Services.Configure<CookiePolicyOptions>(options =>
-            //{
-            //    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-            //    options.CheckConsentNeeded = context => true;
-            //    options.MinimumSameSitePolicy = SameSiteMode.None;
-            //});
+            
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddSession(options =>
             {
@@ -30,6 +25,8 @@ namespace Learn
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<OnlineShopJoyContext>(options =>
                 options.UseSqlServer(connectionString));
+            
+            //builder.Services.AddRazorPages();
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -37,6 +34,17 @@ namespace Learn
             builder.Services.AddRazorPages();
 
             var app = builder.Build();
+
+            //builder.Services.ConfigureApplicationCookie(options =>
+            //{
+            //    // Cookie settings
+            //    options.Cookie.HttpOnly = true;
+            //    options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+            //    options.LoginPath = "/Identity/Account/Login";
+            //    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+            //    options.SlidingExpiration = true;
+            //});
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -58,8 +66,8 @@ namespace Learn
 
 
 
-            //app.UseAuthentication();
-            //app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
@@ -71,20 +79,13 @@ namespace Learn
                 //  name: "areas",
                 //  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
                 //);
+                endpoints.MapRazorPages();
 
-              
             });
-
+                     
            
 
-            //app.MapControllerRoute(
-            //    name: "MyArea",
-            //    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
-            //app.MapControllerRoute(
-            //name: "default",
-            //pattern: "{controller=Home}/{action=Index}/{id?}");
-            //app.MapRazorPages();
+            
 
             app.Run();
         }

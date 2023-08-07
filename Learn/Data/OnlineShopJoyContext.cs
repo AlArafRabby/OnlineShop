@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Learn.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Learn.Data
 {
-    public partial class OnlineShopJoyContext : DbContext
+    public partial class OnlineShopJoyContext :  IdentityDbContext<IdentityUser>
     {
         public OnlineShopJoyContext()
         {
